@@ -1,7 +1,8 @@
 import React, { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
-import { Container, AddButton, AddButtonImage } from './styles'
+import { Container, AddButton, AddButtonImage, NoteList } from './styles'
+import NoteItem from "../../components/NoteItem";
 
 type Nav = {
   navigate: (value: string) => void;
@@ -23,9 +24,23 @@ export default () => {
     })
   }, [])
 
+  const handleNotePress = (index) => {
+    alert(`clicou em ${index}`)
+  }
+
   return (
     <Container>
-
+      <NoteList
+        data={list}
+        renderItem={({ item, index }) => (
+          <NoteItem
+            data={item}
+            index={index}
+            onPress={handleNotePress}
+          />
+        )}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </Container>
   )
 }
