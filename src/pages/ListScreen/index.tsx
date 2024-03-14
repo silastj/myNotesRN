@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
-import { Container, AddButton, AddButtonImage, NoteList } from './styles'
+import { Container, AddButton, AddButtonImage, NoteList, NoNotes, NoNotesImage, NoNotesText } from './styles'
 import NoteItem from "../../components/NoteItem";
 
 type Nav = {
@@ -22,25 +22,36 @@ export default () => {
         </AddButton>
       )
     })
-  }, [])
+  }, [navigation])
 
-  const handleNotePress = (index) => {
-    alert(`clicou em ${index}`)
+  const handleNotePress = (index: unknown) => {
+    if(navigation){
+      navigation.navigate('EditNote', {
+        key: index})
+    }
   }
 
   return (
     <Container>
-      <NoteList
-        data={list}
-        renderItem={({ item, index }) => (
-          <NoteItem
-            data={item}
-            index={index}
-            onPress={handleNotePress}
-          />
-        )}
-        keyExtractor={(item, index) => index.toString()}
-      />
+      {list.length > 0 &&
+        <NoteList
+          data={list}
+          renderItem={({ item, index }) => (
+            <NoteItem
+              data={item}
+              index={index}
+              onPress={handleNotePress}
+            />
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      }
+      {list.length === 0 &&
+        <NoNotes>
+          <NoNotesImage source={require('../../assets/notes.png')} />
+          <NoNotesText>Nenhuma anotação</NoNotesText>
+        </NoNotes>
+      }
     </Container>
   )
 }

@@ -25,3 +25,21 @@ export const NoteList = styled.FlatList`
   width: 100%;
 `;
 
+export const NoNotesImage = styled.Image`
+  height:100px;
+  width: 80px;
+  object-fit: contain;
+`;
+
+export const NoNotes = styled.View`
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+`;
+export const NoNotesText = styled.Text`
+  color: #d7d7d7;
+  margin-top: 10px;
+  font-size: 20px;
+  text-transform: uppercase;
+`;
