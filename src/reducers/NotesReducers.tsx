@@ -1,6 +1,7 @@
 interface Note {
   title: string;
   body: string;
+  key?: number
 }
 
 interface NotesState {
@@ -8,24 +9,39 @@ interface NotesState {
 }
 
 interface AddNoteAction {
-  type: 'ADD_NOTE';
+  type: 'ADD_NOTE' | 'EDIT_NOTE'| 'DEL_NOTE';
   payload: Note;
+  key?: number
 }
 
 type ActionTypes = AddNoteAction;
 
-const initialState: NotesState  = {
+const initialState: NotesState = {
   list: [
-    {title: 'Primeira nota', body: 'Testando 1,2,3 ...'}
+    { title: 'Primeira nota', body: 'Testando 1,2,3 ...' }
   ]
 };
 
 export default (state = initialState, action: ActionTypes) => {
+  let newList = [...state.list]
 
-  switch(action.type) {
+  switch (action.type) {
     case 'ADD_NOTE':
+      newList.push({
+        title: action.payload.title,
+        body: action.payload.body
+      })
+      break;
 
-    break;
+    case 'EDIT_NOTE':
+      if (newList[action.payload?.key]) {
+        newList[action.payload.key] = {
+          title: action.payload.title,
+          body: action.payload.body
+        }
+      }
+    case 'DEL_NOTE':
+      newList = newList.filter((item, index) => index != action.payload.key)
   }
-  return state
+  return { ...state, list: newList }
 }
